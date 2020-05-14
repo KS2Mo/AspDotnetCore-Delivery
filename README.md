@@ -1,4 +1,11 @@
 # delivery_system
+###### ระบบนี้พัฒนาโดยใช้ 
+###### - asp.net core  เป็น Back End
+###### - Sql server เป็นฐานข้อมูล
+###### - Entity Frame work concept 
+###### - Html5 และ Bootstrap เป็น Front End 
+###### - มีการส่งค่า ในรูปแบบของ REST API return JSON Value 
+
 ![GitHub Logo](/Pictuer/progress.png)
 
 ![GitHub Logo](/Pictuer/list_messager.png)
