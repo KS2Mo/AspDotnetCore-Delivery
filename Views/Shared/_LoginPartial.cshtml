@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Identity
+@using HSHDelivery.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item" style="padding-right:20px;">
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage" class="nav-link">Hello @UserManager.GetUserName(User)!</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link"> ออกจากระบบ </a>
+                @*<button type="submit" class="btn btn-link navbar-btn nav-link">ออกจากระบบ</button>*@
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="navbar-nav navbar-collapse justify-content-end">
+        @*<li class="nav-item"><a asp-area="" asp-controller="Account" class="nav-link" asp-action="Register">Register</a></li>*@
+        <li class="nav-item"> <a asp-area="" asp-controller="Account" class="nav-link" asp-action="Login">เข้าสู่ระบบ</a></li>
+    </ul>
+}

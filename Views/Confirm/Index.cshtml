@@ -1,0 +1,145 @@
+﻿@*@model IEnumerable<HSHDelivery.Models.Delivery>*@
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+@*<h3>อนุมัติ/ไม่อนุมัติ การจัดส่งพัสดุ</h3>
+<hr />
+<div class="form-border">
+    <table class="table table-bordered table-sm">
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(m => m.DeliveryTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.DeliveryDeadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.PleaseShipping)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.ContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.ContactTel)
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(m => item.DeliveryType.DeliveryTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.DeliveryDeadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.PleaseShipping)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.ContactName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.ContactTel)
+                </td>
+                <td>
+                    <a asp-action="Confirm" class="btn btn-sm btn-success" asp-route-id="@item.DeliveryId"> <i class="fas fa-check-square"></i> อนุมัติ</a>
+                    <a asp-action="NoConfirm" class="btn btn-sm btn-danger" asp-route-id="@item.DeliveryId"> <i class="fas fa-window-close"></i> ไม่อนุมัติ</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>*@
+
+
+
+
+
+
+
+<div class="border backgroundWhite p-3">
+    <div class="d-flex justify-content-between mb-3">
+        <div class="p-2">
+            <h2 class="text-dark">อนุมัติ/ไม่อนุมัติ การจัดส่งพัสดุ</h2>
+        </div>
+        <div class="p-2">
+        </div>
+    </div>
+    <div class="form-border">
+        <div class="table-responsive">
+            <table id="tblData" class="table table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>No</th>
+                        <th>ประเภท</th>
+                        <th>กำหนดส่ง</th>
+                        <th>สถานที่จัดส่ง</th>
+                        <th>ชื่อผู้ติดต่อ</th>
+                        <th>เบอร์โทร</th>
+                        <th>ผู้แจ้ง</th>
+                        <th>วันที่แจ้ง</th>
+
+                    </tr>
+                </thead>
+            </table>
+            </div>
+        </div>
+    </div>
+
+
+@section Scripts{
+    <script>
+                var dataTable;
+                $(document).ready(function () {
+                    loadDataTable();
+                });
+
+                function loadDataTable() {
+                    dataTable = $('#tblData').DataTable({
+                        "ajax": {
+                            "url": "/Confirm/GetDelivery",
+                            "type": "GET",
+                            "datatype": "json"
+                        },
+                        "columns": [
+                            {
+                                "data": "deliveryId",
+                                "render": function (data) {
+                                    return `<div class="text-center">
+                                                <a href="/Confirm/Confirm/${data}" class='btn btn-sm btn-success'>
+                                                    <i class="fas fa-check-square"></i>
+                                                </a>
+                                                <a  href="/Confirm/NoConfirm/${data}" class='btn btn-sm btn-danger' >
+                                                    <i class="fas fa-window-close"></i>
+                                                </a>
+
+                                            </div>
+                                        `;
+                                }, "width": "10%"
+                            },
+                            { "data": "deliveryId" },
+                            { "data": "deliveryType.deliveryTypeName", "width": "10%" },
+                            { "data": "deliveryDeadline", "width": "10%" },
+                            { "data": "pleaseShipping", "width": "15%" },
+                            { "data": "contactName", "width": "10%" },
+                            { "data": "contactTel", "width": "10%" },
+                            { "data": "requestsName", "width": "10%" },
+                            { "data": "requestsDate", "width": "10%" }
+                            
+                        ],
+                        "language": {
+                            "emptyTable": "No records found."
+                        },
+                        "width": "100%"
+                    });
+                }
+    </script>
+}
+
+
+

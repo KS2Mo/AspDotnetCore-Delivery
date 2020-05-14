@@ -1,0 +1,144 @@
+﻿@model IEnumerable<HSHDelivery.Models.Delivery>
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Scripts{
+    <script type="text/javascript">$(function () {
+            var dateFormat = "mm/dd/yy",
+                from = $("#startDate")
+                    .datepicker({
+                        changeMonth: true,
+                        changeYear: true,
+                        maxDate: "+0D"
+                    })
+                    .on("change", function () {
+                        to.datepicker("option", "minDate", getDate(this));
+                    }),
+                to = $("#endDate").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    maxDate: "+0D"
+
+                })
+                    .on("change", function () {
+                        from.datepicker("option", "maxDate", getDate(this));
+                    });
+
+            function getDate(element) {
+                var date;
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+        });</script>
+}
+
+
+<div class="border backgroundWhite p-3">
+    <div class="row">
+        <div class="col-6">
+            <h3 class="text-dark">ประวัติการแจ้งงานจัดส่งพัสดุ</h3>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-action="Create" type="button" class="btn btn-sm btn-success">
+                <i class="fas fa-plus"></i>
+                &nbsp; แจ้งงานจัดส่งพัสดุ
+            </a>
+        </div>
+    </div>
+    <hr />
+
+    <form method="post">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label class="custom-label">Start Date</label>
+                @Html.Editor("startDate", new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                @*<input asp-for="@Model.startDate" type="text" id="from" class="form-control">*@
+            </div>
+            <div class="form-group col-md-4">
+                <label class="custom-label">End Date</label>
+                @Html.Editor("endDate", new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+            </div>
+            <div class="form-group col-md-2">
+                <label class="custom-label">.</label>
+                <button type="submit" name="submit" value="Search" class="btn btn-primary btn-block ">
+                    <i class="fas fa-search"></i> ค้นหา
+                </button>
+            </div>
+        </div>
+    </form>
+
+
+<hr />
+<div class="form-border">
+    <div class="table-responsive">
+        <table class="table table-bordered table-sm">
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(m => m.DeliveryStatusId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.DeliveryTypeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.DeliveryDeadline)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.PleaseShipping)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.ContactName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.ContactTel)
+                </th>
+
+            </tr>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @if (item.DeliveryStatusId == 7 || item.DeliveryStatusId == 8)
+                    {
+                        <a asp-action="Details" class="btn btn-sm btn-success" asp-route-id="@item.DeliveryId"> <i class="far fa-list-alt"></i></a>
+                    }
+                    @if (item.DeliveryStatusId < 7)
+                    {
+                        <a asp-action="Details" class="btn btn-sm btn-success" asp-route-id="@item.DeliveryId"> <i class="far fa-list-alt"></i></a>
+                        <a asp-action="Edit" class="btn btn-sm btn-primary" asp-route-id="@item.DeliveryId"> <i class="fas fa-edit"></i></a>
+                        <a asp-action="Delete" class="btn btn-sm btn-danger" asp-route-id="@item.DeliveryId">  <i class="fas fa-trash-alt"></i></a>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.DeliveryStatus.DeliveryStatusName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.DeliveryType.DeliveryTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.DeliveryDeadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.PleaseShipping)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.ContactName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.ContactTel)
+                </td>
+
+            </tr>
+            }
+        </table>
+    </div>
+</div>
+    </div>
+

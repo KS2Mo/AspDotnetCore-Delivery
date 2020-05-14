@@ -1,0 +1,110 @@
+﻿@model RegisterViewModel
+@using HSHDelivery.Extensions
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+
+
+
+<div class="border backgroundWhite p-3">
+    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+        <div class="row">
+            <div class="col-6">
+                <h3 class="text-dark">เพิ่มผู้ใช้งานใหม่</h3>
+            </div>
+            <div class="col-6 text-right">
+                <input type="submit" value="บันทึก" class="btn btn-success btn-sm" />
+                <a asp-action="Index" class="btn btn-dark btn-sm">กลับหน้าหลัก</a>
+            </div>
+        </div>
+        <hr />
+
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label asp-for="NicName"></label>
+                        <input asp-for="NicName" class="form-control" />
+                        <span asp-validation-for="NicName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label asp-for="EmployeeCode"></label>
+                        <input asp-for="EmployeeCode" class="form-control" />
+                        <span asp-validation-for="EmployeeCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label asp-for="ConfirmPassword"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="PhoneNumber"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label asp-for="RoleId" class="custom-label"></label>
+                        <select asp-for="RoleId" id="RoleId" asp-items="Model.RoleList.ToSelectListItem()" class="form-control"></select>
+                    </div>
+                </div>
+
+                @* <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="MenuItem.CategoryId" class="custom-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="@Model.MenuItem.CategoryId" id="CategoryId" asp-items="Model.Category.ToSelectListItem(Model.MenuItem.CategoryId)" class="form-control"></select>
+                    </div>
+                </div>
+                *@
+
+
+                
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+

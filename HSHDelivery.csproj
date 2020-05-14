@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>aspnet-HSHDelivery-C45F9FE5-B468-4ABB-AC4E-7052AA8A1E7E</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200407022024_AddDeliveryHistory.cs" />
+    <Compile Remove="Data\Migrations\20200407022024_AddDeliveryHistory.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407022459_AddDeliveryHistoryอ.cs" />
+    <Compile Remove="Data\Migrations\20200407022459_AddDeliveryHistoryอ.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407022726_AddDeliveryHistoryV1.cs" />
+    <Compile Remove="Data\Migrations\20200407022726_AddDeliveryHistoryV1.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407023318_AddDeliveryHistoryV2.cs" />
+    <Compile Remove="Data\Migrations\20200407023318_AddDeliveryHistoryV2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407025116_AddDeliveryHistoryV3.cs" />
+    <Compile Remove="Data\Migrations\20200407025116_AddDeliveryHistoryV3.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407025254_AddDeliveryHistoryV4.cs" />
+    <Compile Remove="Data\Migrations\20200407025254_AddDeliveryHistoryV4.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407025540_AddDeliveryHistoryV5.cs" />
+    <Compile Remove="Data\Migrations\20200407025540_AddDeliveryHistoryV5.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407025656_AddDeliveryHistoryV6.cs" />
+    <Compile Remove="Data\Migrations\20200407025656_AddDeliveryHistoryV6.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407030220_AddDeliveryHistoryV7.cs" />
+    <Compile Remove="Data\Migrations\20200407030220_AddDeliveryHistoryV7.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407030612_AddDeliveryV1.cs" />
+    <Compile Remove="Data\Migrations\20200407030612_AddDeliveryV1.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407030823_AddDeliveryV2.cs" />
+    <Compile Remove="Data\Migrations\20200407030823_AddDeliveryV2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407031008_AddDeliveryV3.cs" />
+    <Compile Remove="Data\Migrations\20200407031008_AddDeliveryV3.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407031222_AddDeliveryV4.cs" />
+    <Compile Remove="Data\Migrations\20200407031222_AddDeliveryV4.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407031528_AddDeliveryV5.cs" />
+    <Compile Remove="Data\Migrations\20200407031528_AddDeliveryV5.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407031635_AddDeliveryV6.cs" />
+    <Compile Remove="Data\Migrations\20200407031635_AddDeliveryV6.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407031744_AddDeliveryV7.cs" />
+    <Compile Remove="Data\Migrations\20200407031744_AddDeliveryV7.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200407032050_AddDeliveryV8.cs" />
+    <Compile Remove="Data\Migrations\20200407032050_AddDeliveryV8.Designer.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="FreeGeoIPCore" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" PrivateAssets="All" />
+    <PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="18.1.0.42" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Shared\_StatusMessage.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+</Project>

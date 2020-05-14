@@ -1,0 +1,621 @@
+﻿@model HSHDelivery.Models.Delivery
+@{
+    ViewData["Title"] = "Process";
+}
+
+@*<link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>*@
+@*<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'>*@
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<link href='https://use.fontawesome.com/releases/v5.0.1/css/all.css' rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0
+    }
+
+    html {
+        height: 100%
+    }
+
+    p {
+        color: grey
+    }
+
+    /*#heading {
+        text-transform: uppercase;
+        color: #0d0c0c;
+        font-weight: normal
+    }*/
+
+    #msform {
+        text-align: center;
+        position: relative;
+        margin-top: 20px
+    }
+
+        #msform fieldset {
+            background: white;
+            border: 0 none;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+            width: 100%;
+            margin: 0;
+            padding-bottom: 20px;
+            position: relative
+        }
+
+    .form-card {
+        text-align: left
+    }
+
+    #msform fieldset:not(:first-of-type) {
+        display: none
+    }
+
+    /*#msform input,
+    #msform textarea {
+        padding: 8px 15px 8px 15px;
+        border: 1px solid #ccc;
+        border-radius: 0px;
+        margin-bottom: 25px;
+        margin-top: 2px;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: montserrat;
+        color: #2C3E50;
+        background-color: #ECEFF1;
+        font-size: 16px;
+        letter-spacing: 1px
+    }*/
+
+    /*#msform input:focus,
+        #msform textarea:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: 1px solid #050505;
+            outline-width: 0
+        }*/
+
+    #msform .action-button {
+        width: 100px;
+        background: #050505;
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        border-radius: 0px;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 0px 10px 5px;
+        float: right
+    }
+
+        #msform .action-button:hover,
+        #msform .action-button:focus {
+            background-color: #858585
+        }
+
+    #msform .action-button-previous {
+        width: 100px;
+        background: #616161;
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        border-radius: 0px;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 5px 10px 0px;
+        float: right
+    }
+
+        #msform .action-button-previous:hover,
+        #msform .action-button-previous:focus {
+            background-color: #000000
+        }
+
+    .card {
+        z-index: 0;
+        border: none;
+        position: relative
+    }
+
+    .fs-title {
+        font-size: 25px;
+        color: #000000;
+        margin-bottom: 15px;
+        font-weight: normal;
+        text-align: left
+    }
+
+    .purple-text {
+        color: #070708;
+        font-weight: normal
+    }
+
+    .steps {
+        font-size: 25px;
+        color: gray;
+        margin-bottom: 10px;
+        font-weight: normal;
+        text-align: right
+    }
+
+    .fieldlabels {
+        color: gray;
+        text-align: left
+    }
+
+    #progressbar {
+        margin-bottom: 30px;
+        overflow: hidden;
+        color: lightgrey
+    }
+
+        #progressbar .active {
+            color: #000000
+        }
+
+        #progressbar li {
+            list-style-type: none;
+            font-size: 15px;
+            width: 25%;
+            float: left;
+            position: relative;
+            font-weight: 400
+        }
+
+        #progressbar #account:before {
+            content: "\f04c";
+            font-family: 'Font Awesome\ 5 Free';
+            font-weight: 900;
+        }
+
+        #progressbar #personal:before {
+            font-family: 'Font Awesome\ 5 Free';
+            content: "\f04b";
+            font-weight: 900;
+        }
+
+        #progressbar #payment:before {
+            font-family: 'Font Awesome\ 5 Free';
+            content: "\f965";
+            font-weight: 900;
+        }
+
+        #progressbar #confirm:before {
+            font-family: 'Font Awesome\ 5 Free';
+            content: "\f4be";
+            font-weight: 900;
+        }
+
+        #progressbar li:before {
+            width: 50px;
+            height: 50px;
+            line-height: 45px;
+            display: block;
+            font-size: 20px;
+            color: #ffffff;
+            background: lightgray;
+            border-radius: 50%;
+            margin: 0 auto 10px auto;
+            padding: 2px
+        }
+
+        #progressbar li:after {
+            content: '';
+            width: 100%;
+            height: 2px;
+            background: lightgray;
+            position: absolute;
+            left: 0;
+            top: 25px;
+            z-index: -1
+        }
+
+        #progressbar li.active:before,
+        #progressbar li.active:after {
+            background: #0c0c0d
+        }
+
+    .progress {
+        height: 20px
+    }
+
+    .progress-bar {
+        background-color: #111112
+    }
+
+    .fit-image {
+        width: 100%;
+        object-fit: cover
+    }
+</style>
+
+
+
+
+
+
+
+<script>
+
+    function ConfirmStartSending(url) {
+        //showPosition();
+        var tempLatitude = 0.0000;
+        var tempLongitude = 0.0000;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                tempLatitude = position.coords.latitude;
+                tempLongitude = position.coords.longitude;
+                //alert(tempLatitude + '|' + tempLongitude);
+                swal({
+                    title: "ยืนยันการทำรายการใช่ไหม?",
+                    buttons: true,
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: 'GET',
+                            url: url + '|' + tempLatitude + '|' + tempLongitude,
+                            success: function (data) {
+                                if (data.success) {
+                                    location.reload();
+                                }
+                                else {
+                                    //toastr.error(data.message);
+                                }
+                            }
+                        });
+                    }
+                   
+                });
+                
+            });
+        }
+        else {
+            swal("geolocation not supported")
+        }
+    }
+
+    function CencleProcess(url) {
+        swal("กรุณากรอกเหตุผลในการยกเลิก",
+            {
+                content: "input",
+            })
+            .then((value) => {
+                //swal(`You typed: ${value}`);
+                var tempLatitude = 0.0000;
+                var tempLongitude = 0.0000;
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        tempLatitude = position.coords.latitude;
+                        tempLongitude = position.coords.longitude;
+                        //alert(tempLatitude + '|' + tempLongitude);
+                        swal({
+                            title: "ยืนยันการทำรายการใช่ไหม?",
+                            buttons: true,
+                            dangerMode: true
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: url + '|' + tempLatitude + '|' + tempLongitude + '|' + `${value}`,
+                                    success: function (data) {
+                                        if (data.success) {
+                                            location.reload();
+                                        }
+                                        else {
+                                            //toastr.error(data.message);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+                else {
+                    swal("geolocation not supported")
+                }
+
+
+            });
+    }
+</script>
+
+
+
+
+
+@if (Model.DeliveryStatusId == 5)
+{
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                    <h2 id="heading">รอจัดส่งสินค้า</h2>
+                    <ul id="progressbar">
+                        <li class="active" id="account"><strong>รอจัดส่งสินค้า</strong></li>
+                        <li id="personal"><strong>ระหว่างนำส่ง</strong></li>
+                        <li id="payment"><strong>ถึงปลายทาง</strong></li>
+                        <li id="confirm"><strong>จัดส่งเสร็จสิ้น</strong></li>
+                    </ul>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+
+                    <br />
+                    <div class="form-card">
+                        <div class="row">
+                            <div class="col-12">
+                                <div>
+                                    @*href="/Messenger/StartSending/@Model.DeliveryId"*@
+                                    <a onclick=ConfirmStartSending("/Messenger/_StartSendingLocation/@Model.DeliveryId") class='btn btn-success active'>
+                                        <i class="fas fa-play"></i> เริ่มส่ง
+                                    </a>
+                                    <a onclick=CencleProcess("/Messenger/_ToCancleLocation/@Model.DeliveryId") class='btn btn-danger active'>
+                                        <i class="fas fa-minus"></i> ยกเลิก
+                                    </a>
+                                    <a href="/Messenger/DeliveryList" class='btn btn-light'>
+                                        <i class="fas fa-undo"></i> กลับหน้าหลัก
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="alert alert-dark" role="alert">
+                            <strong>กำหนดส่ง :</strong> @Model.DeliveryDeadline <br />
+                            <strong>ชื่อผู้รับสินค้า :</strong> @Model.ContactName <br />
+                            <strong>เบอร์โทร :</strong> @Model.ContactTel <br />
+                            <strong>สถานที่จัดส่ง :</strong> @Model.PleaseShipping  @Model.AddressDetails
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var item in Model.DeliveryHistory.OrderByDescending(t=>t.CreateDate))
+                            {
+                                <li class="list-group-item">
+                                    <strong>วัน-เวลา :</strong> @item.CreateDate <br />
+                                    <strong>โดย:</strong> @item.CreateName  <br />
+                                    <strong>สถานะ :</strong> @item._Comment <br />
+                                </li>
+                            }
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา รับงาน :</strong> @Model.MessengersDate <br />
+                                <strong>ผู้รับงาน :</strong> @Model.MessengersName
+                            </li>
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา มอบหมาย :</strong> @Model.AssignerDate <br />
+                                <strong>ผู้มอบหมาย :</strong> @Model.AssignerNameBy
+                            </li>
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา แจ้งงาน :</strong> @Model.RequestsDate <br />
+                                <strong>ผู้แจ้ง :</strong> @Model.RequestsName
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (Model.DeliveryStatusId == 6)
+{
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                    <h2 id="heading">ระหว่างนำส่ง</h2>
+                    <ul id="progressbar">
+                        <li class="active" id="account"><strong>รอจัดส่งสินค้า</strong></li>
+                        <li class="active" id="personal"><strong>ระหว่างนำส่ง</strong></li>
+                        <li id="payment"><strong>ถึงปลายทาง</strong></li>
+                        <li id="confirm"><strong>จัดส่งเสร็จสิ้น</strong></li>
+                    </ul>
+                    <br />
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <br />
+                    <div class="form-card">
+                        <div class="row">
+                            <div class="col-12">
+                                <div>
+                                    <a onclick=ConfirmStartSending("/Messenger/_ToSendingLocation/@Model.DeliveryId") class='btn btn-success active'>
+                                        <i class='fas fa-check-square'></i> ถึงที่หมาย
+                                    </a>
+                                    <a onclick=CencleProcess("/Messenger/_NoSuccessfulLocation/@Model.DeliveryId") class='btn btn-danger active'>
+                                        <i class='fas fa-window-close'></i> ส่งไม่สำเร็จ
+                                    </a>
+                                    <a href="/Messenger/DeliveryList" class='btn btn-light'>
+                                        <i class="fas fa-undo"></i> กลับหน้าหลัก
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="alert alert-dark" role="alert">
+                            <strong>กำหนดส่ง :</strong> @Model.DeliveryDeadline <br />
+                            <strong>ชื่อผู้รับสินค้า :</strong> @Model.ContactName <br />
+                            <strong>เบอร์โทร :</strong> @Model.ContactTel <br />
+                            <strong>สถานที่จัดส่ง :</strong> @Model.PleaseShipping  @Model.AddressDetails
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var item in Model.DeliveryHistory.OrderByDescending(t => t.CreateDate))
+                            {
+                                <li class="list-group-item">
+                                    <strong>วัน-เวลา :</strong> @item.CreateDate <br />
+                                    <strong>โดย:</strong> @item.CreateName  <br />
+                                    <strong>สถานะ :</strong> @item._Comment 
+                                </li>
+                            }
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา รับงาน :</strong> @Model.MessengersDate <br />
+                                <strong>ผู้รับงาน :</strong> @Model.MessengersName
+                            </li>
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา มอบหมาย :</strong> @Model.AssignerDate <br />
+                                <strong>ผู้มอบหมาย :</strong> @Model.AssignerNameBy
+                            </li>
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา แจ้งงาน :</strong> @Model.RequestsDate <br />
+                                <strong>ผู้แจ้ง :</strong> @Model.RequestsName
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (Model.DeliveryStatusId == 7)
+{
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                    <h2 id="heading">ถึงปลายทาง</h2>
+                    <ul id="progressbar">
+                        <li class="active" id="account"><strong>รอจัดส่งสินค้า</strong></li>
+                        <li class="active" id="personal"><strong>ระหว่างนำส่ง</strong></li>
+                        <li class="active" id="payment"><strong>ถึงปลายทาง</strong></li>
+                        <li id="confirm"><strong>จัดส่งเสร็จสิ้น</strong></li>
+                    </ul>
+                    <br />
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <br />
+
+                    <div class="form-card">
+                        <div class="row">
+                            <div class="col-12">
+                                <div>
+                                    <a onclick=ConfirmStartSending("/Messenger/_SuccessfulLocation/@Model.DeliveryId") class='btn btn-success active'>
+                                        <i class='fas fa-check-square'></i> ส่งสำเร็จ
+                                    </a>
+                                    <a onclick=CencleProcess("/Messenger/_NoSuccessfulLocation/@Model.DeliveryId")  class='btn btn-danger active'>
+                                        <i class='fas fa-window-close'></i> ส่งไม่สำเร็จ
+                                    </a>
+                                    <a href="/Messenger/DeliveryList" class='btn btn-light'>
+                                        <i class="fas fa-undo"></i> กลับหน้าหลัก
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="alert alert-dark" role="alert">
+                            <strong>กำหนดส่ง :</strong> @Model.DeliveryDeadline <br />
+                            <strong>ชื่อผู้รับสินค้า :</strong> @Model.ContactName <br />
+                            <strong>เบอร์โทร :</strong> @Model.ContactTel <br />
+                            <strong>สถานที่จัดส่ง :</strong> @Model.PleaseShipping  @Model.AddressDetails
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var item in Model.DeliveryHistory.OrderByDescending(t => t.CreateDate))
+                            {
+                                <li class="list-group-item">
+                                    <strong>วัน-เวลา :</strong> @item.CreateDate <br />
+                                    <strong>โดย:</strong> @item.CreateName  <br />
+                                    <strong>สถานะ :</strong> @item._Comment 
+                                </li>
+                            }
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา รับงาน :</strong> @Model.MessengersDate <br />
+                                <strong>ผู้รับงาน :</strong> @Model.MessengersName
+                            </li>
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา มอบหมาย :</strong> @Model.AssignerDate <br />
+                                <strong>ผู้มอบหมาย :</strong> @Model.AssignerNameBy
+                            </li>
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา แจ้งงาน :</strong> @Model.RequestsDate <br />
+                                <strong>ผู้แจ้ง :</strong> @Model.RequestsName
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (Model.DeliveryStatusId == 8)
+{
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                    <h2 id="heading">จัดส่งเสร็จสิ้น</h2>
+                    <ul id="progressbar">
+                        <li class="active" id="account"><strong>รอจัดส่งสินค้า</strong></li>
+                        <li class="active" id="personal"><strong>ระหว่างนำส่ง</strong></li>
+                        <li class="active" id="payment"><strong>ถึงปลายทาง</strong></li>
+                        <li class="active" id="confirm"><strong>จัดส่งเสร็จสิ้น</strong></li>
+                    </ul>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <br />
+                    <div class="form-card">
+                        <div class="row">
+                            <div class="col-12">
+                                <div>
+                                    <a href="/Messenger/Details/@Model.DeliveryId" class='btn btn-success active'>
+                                        <i class='far fa-list-alt'></i> รายละเอียด
+                                    </a>
+                                    <a href="/Messenger/PdfExport/@Model.DeliveryId" class='btn btn-dark active'>
+                                        <i class='fas fa-print'></i> พิมพ์
+                                    </a>
+                                    <a href="/Messenger/DeliveryList" class='btn btn-light'>
+                                        <i class="fas fa-undo"></i> กลับหน้าหลัก
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="alert alert-dark" role="alert">
+                            <strong>กำหนดส่ง :</strong> @Model.DeliveryDeadline <br />
+                            <strong>ชื่อผู้รับสินค้า :</strong> @Model.ContactName <br />
+                            <strong>เบอร์โทร :</strong> @Model.ContactTel <br />
+                            <strong>สถานที่จัดส่ง :</strong> @Model.PleaseShipping  @Model.AddressDetails
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var item in Model.DeliveryHistory.OrderByDescending(t => t.CreateDate))
+                            {
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา :</strong> @item.CreateDate <br />
+                                <strong>โดย:</strong> @item.CreateName  <br />
+                                <strong>สถานะ :</strong> @item._Comment 
+                            </li>
+                            }
+                            @*<li class="list-group-item">
+                                <strong>วัน-เวลา เสร็จสิ้น :</strong> @Model.MessengersEndDate <br />
+                                <strong>ผู้จัดส่ง :</strong> @Model.MessengersName
+                            </li>*@
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา รับงาน :</strong> @Model.MessengersDate <br />
+                                <strong>ผู้รับงาน :</strong> @Model.MessengersName
+                            </li>
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา มอบหมาย :</strong> @Model.AssignerDate <br />
+                                <strong>ผู้มอบหมาย :</strong> @Model.AssignerNameBy
+                            </li>
+                            <li class="list-group-item">
+                                <strong>วัน-เวลา แจ้งงาน :</strong> @Model.RequestsDate <br />
+                                <strong>ผู้แจ้ง :</strong> @Model.RequestsName
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+
+

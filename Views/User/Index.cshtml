@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*@model IEnumerable<RegisterViewModel>
+
+
+    @Html.Partial("_CreateButtonPartial")
+
+
+
+    <div class="form-border">
+        <table id="myTable" class="table table-sm table-bordered">
+            <tr>
+                <th>RoleName</th>
+                <th>Code</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            @foreach (RegisterViewModel user in Model)
+            {
+                <tr>
+                    <td>@user.RoleName</td>
+                    <td>@user.EmployeeCode</td>
+                    <td>@user.FirstName  @user.LastName (@user.NicName)</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@user.EmployeeStatus</td>
+                    <td>
+                        <a asp-action="Update" class="btn btn-sm btn-primary" asp-route-id="@user.Id"> <i class="fas fa-edit"></i></a>
+                        <a asp-action="Delete" class="btn btn-sm btn-danger" asp-route-id="@user.Id">  <i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>*@
+
+
+<div class="border backgroundWhite p-3">
+    <div class="d-flex justify-content-between mb-3">
+        <div class="p-2">
+            <h2 class="text-dark">จัดการผู้ใช้งานระบบ</h2>
+        </div>
+        <div class="p-2">
+            @Html.Partial("_CreateButtonPartial")
+        </div>
+    </div>
+    <div class="form-border">
+        <div class="table-responsive">
+            <table id="tblData" class="table table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>อีเมล์/ชื่อเข้าใช้งาน</th>
+                        <th>ชื่อ</th>
+                        <th>นามสกุล</th>
+                        <th>ชื่อเล่น</th>
+
+                    </tr>
+                </thead>
+            </table>
+            </div>
+        </div>
+    </div>
+
+@section Scripts{
+    <script>
+        var dataTable;
+        $(document).ready(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            dataTable = $('#tblData').DataTable({
+                "ajax": {
+                    "url": "/User/GetAll",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    {
+                        "data": "id",
+                        "render": function (data) {
+                            return `<div class="text-center">
+                                                    <a href="/User/Update/${data}" class='btn btn-success btn-sm'>
+                                                        <i class='far fa-edit'></i>
+                                                    </a>
+                                                    <a href="/User/Delete/${data}" class='btn btn-danger btn-sm'>
+                                                        <i class='far fa-trash-alt'></i>
+                                                    </a>
+                                                    <a href="/User/ResetPassword/${data}" class='btn btn-warning btn-sm'>
+                                                        <i class='fas fa-key'></i>
+                                                    </a>
+                                                    </div>
+                                            `;
+                        }
+                    },
+                    { "data": "userName", "width": "35%" },
+                    { "data": "firstName", "width": "20%" },
+                    { "data": "lastName", "width": "20%" },
+                    { "data": "nicName", "width": "10%" }
+
+                ],
+                "language": {
+                    "emptyTable": "No records found."
+                },
+                "width": "100%"
+            });
+        }
+
+
+
+        function Delete(url) {
+            swal({
+                title: "Are you sure you want to Delete?",
+                text: "You will not be able to restore the data!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: url,
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.message);
+                                dataTable.ajax.reload();
+                            }
+                            else {
+                                toastr.error(data.message);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+
+    </script>
+}
+
+
+

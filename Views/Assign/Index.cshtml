@@ -1,0 +1,79 @@
+﻿@*@model IEnumerable<HSHDelivery.Models.Delivery>*@
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="border backgroundWhite p-3">
+    <div class="d-flex justify-content-between mb-3">
+        <div class="p-2">
+            <h2 class="text-dark">มอบหมายงานจัดส่งพัสดุ</h2>
+        </div>
+        <div class="p-2">
+        </div>
+    </div>
+    <div class="form-border">
+        <div class="table-responsive">
+            <table id="tblData" class="table table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>No</th>
+                        <th>ประเภท</th>
+                        <th>กำหนดส่ง</th>
+                        <th>สถานที่จัดส่ง</th>
+                        <th>เพิ่มเติม</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        </div>
+    </div>
+
+
+@section Scripts{
+    <script>
+                var dataTable;
+                $(document).ready(function () {
+                    loadDataTable();
+                });
+
+                function loadDataTable() {
+                    dataTable = $('#tblData').DataTable({
+                        "ajax": {
+                            "url": "/Assign/GetConfirmList",
+                            "type": "GET",
+                            "datatype": "json"
+                        },
+                        "columns": [
+                            {
+                                "data": "deliveryId",
+                                "render": function (data) {
+                                    return `<div class="text-center">
+                                                <a href="/Assign/Confirm/${data}" class='btn btn-sm btn-success'>
+                                                    <i class="fas fa-check-square"></i> 
+                                                </a>
+                                                <a  href="/Assign/NoConfirm/${data}" class='btn btn-sm btn-danger' >
+                                                    <i class="fas fa-window-close"></i> 
+                                                </a>
+
+                                            </div>
+                                        `;
+                                }, "width": "10%"
+                            },
+                            { "data": "deliveryId", "width": "7%"  },
+                            { "data": "deliveryType.deliveryTypeName", "width": "10%" },
+                            { "data": "deliveryDeadline", "width": "10%" },
+                            { "data": "pleaseShipping", "width": "15%" },
+                            { "data": "addressDetails"}
+                           
+                        ],
+                        "language": {
+                            "emptyTable": "No records found."
+                        },
+                        "width": "100%"
+                    });
+                }
+    </script>
+}

@@ -1,0 +1,165 @@
+﻿@model HSHDelivery.Models.Delivery
+@using HSHDelivery.Extensions
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="border backgroundWhite p-3">
+
+
+    <div class="d-flex justify-content-between mb-3">
+        <div class="p-2">
+            <h4 class="text-dark">รายละเอียด</h4>
+        </div>
+        <div class="p-2">
+
+            <a asp-action="DeliveryList" class="btn btn-dark btn-sm">กลับหน้าหลัก</a>
+        </div>
+    </div>
+
+
+    <div class="form-border">
+
+
+
+        <div class="p-3 mb-2 bg-dark text-white">
+            <i class="fas fa-asterisk"></i>
+            รหัสงาน :  @Model.DeliveryId
+        </div>
+        <div class="alert alert-light" role="alert">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <h6>
+                        <kbd> @Model.DeliveryStatus.DeliveryStatusName</kbd>
+                    </h6>
+                </div>
+                <div class="form-group col-md-4">
+                    <h6><i class="fas fa-clock"></i> <strong>ประเภท</strong>  @Model.DeliveryType.DeliveryTypeName </h6>
+                </div>
+                <div class="form-group col-md-4">
+                    <h6><i class="fas fa-clock"></i> <strong>กำหนดส่ง</strong>  @Model.DeliveryDeadline </h6>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 col-sm">
+                    <h6><i class="fas fa-user"></i> <strong>ผู้ติดต่อ</strong> @Model.ContactName</h6>
+                </div>
+                <div class="form-group col-md-4  col-sm">
+                    <h6><i class="fas fa-at"></i> <strong>อีเมล์</strong> @Model.ContactEmail</h6>
+                </div>
+                <div class="form-group col-md-4  col-sm">
+                    <h6><i class="fas fa-phone-alt"></i> <strong>เบอร์โทร</strong> @Model.ContactTel</h6>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12 col-sm">
+                    <h6><i class="fas fa-map-marker-alt"></i> <strong>ที่อยู่</strong> @Model.PleaseShipping @Model.AddressDetails</h6>
+                </div>
+            </div>
+            @*<div class="form-row">
+                <div class="form-group col-md-12 col-sm">
+                    <strong>เพิ่มเติม</strong> @Model.Comment
+                </div>
+            </div>*@
+        </div>
+
+        @*<div class="alert alert-secondary" role="alert">
+
+        </div>*@
+        <h3><kbd>รายละเอียดการจัดส่ง</kbd> </h3>
+
+        <ul class="list-group list-group-flush">
+            
+            @foreach (var item in Model.DeliveryHistory.OrderByDescending(t => t.CreateDate))
+            {
+                <li class="list-group-item">
+                    <strong>วัน-เวลา :</strong> @item.CreateDate <br />
+                    <strong>โดย:</strong> @item.CreateName  <br />
+                    <strong>สถานะ :</strong> @item._Comment <br />
+                </li>
+            }
+            <li class="list-group-item">
+                <strong>วัน-เวลา รับงาน :</strong> @Model.MessengersDate <br />
+                <strong>ผู้รับงาน :</strong> @Model.MessengersName
+            </li>
+            <li class="list-group-item">
+                <strong>วัน-เวลา มอบหมาย :</strong> @Model.AssignerDate <br />
+                <strong>ผู้มอบหมาย :</strong> @Model.AssignerNameBy
+            </li>
+            <li class="list-group-item">
+                <strong>วัน-เวลา ผู้อนุมัติ :</strong> @Model.ApproveDate <br />
+                <strong>ผู้อนุมัติ  :</strong> @Model.ApproveName
+            </li>
+            <li class="list-group-item">
+                <strong>วัน-เวลา แจ้งงาน :</strong> @Model.RequestsDate <br />
+                <strong>ผู้แจ้ง :</strong> @Model.RequestsName
+            </li>
+        </ul>
+    </div>
+
+
+
+</div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+@*
+    https://www.w3schools.com/html/html5_geolocation.asp
+    <p>Click the button to get your coordinates.</p>
+
+    <button onclick="getLocation()">Try It</button>
+
+    <p id="demo"></p>
+
+    <script>
+    var x = document.getElementById("demo");
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      x.innerHTML = "Latitude: " + position.coords.latitude +
+      "<br>Longitude: " + position.coords.longitude;
+    }
+    </script>
+*@
+
+@*<script type="text/javascript">
+    var macAddress = "";
+    var ipAddress = "";
+    var computerName = "";
+    var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
+    e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True"));
+    for (; !e.atEnd(); e.moveNext()) {
+        var s = e.item();
+        macAddress = s.MACAddress;
+        ipAddress = s.IPAddress(0);
+        computerName = s.DNSHostName;
+    }
+</script>
+
+<input type="text" id="txtMACAdress" />
+<input type="text" id="txtIPAdress" />
+<input type="text" id="txtComputerName" />
+
+<script type="text/javascript">
+    document.getElementById("txtMACAdress").value = unescape(macAddress);
+    document.getElementById("txtIPAdress").value = unescape(ipAddress);
+    document.getElementById("txtComputerName").value = unescape(computerName);
+</script>*@
+
+
+
+
+
+
+
+

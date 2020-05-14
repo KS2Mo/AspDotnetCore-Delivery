@@ -1,0 +1,87 @@
+﻿@model HSHDelivery.Models.DeliveryType
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+
+
+<br />
+<h2>Delete Delivery Type</h2>
+<br />
+
+
+
+<form asp-action="Delete">
+    <div class="form-border">
+        <input type="hidden" asp-for="DeliveryTypeId" />
+        <fieldset disabled>
+            <div class="form-group row">
+                <div class="col-2">
+                    <label asp-for="DeliveryTypeName" class="control-label"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="DeliveryTypeName" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-2">
+                    <label asp-for="DeliveryTypeStatus" class="control-label"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="DeliveryTypeStatus" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-2">
+                    <label asp-for="CreateDate" class="control-label"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="CreateDate" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-2">
+                    <label asp-for="CreateBy" class="control-label"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="CreateBy" class="form-control" />
+                </div>
+            </div>
+        </fieldset>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-danger" /> &nbsp;
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

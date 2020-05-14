@@ -1,0 +1,159 @@
+﻿@model IEnumerable<HSHDelivery.Models.Delivery>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            var dateFormat = "mm/dd/yy",
+                from = $("#startDate")
+                    .datepicker({
+                        changeMonth: true,
+                        changeYear: true,
+                        maxDate: "+0D"
+                    })
+                    .on("change", function () {
+                        to.datepicker("option", "minDate", getDate(this));
+                    }),
+                to = $("#endDate").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    maxDate: "+0D"
+
+                })
+                    .on("change", function () {
+                        from.datepicker("option", "maxDate", getDate(this));
+                    });
+
+            function getDate(element) {
+                var date;
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+
+            $('#myTable').DataTable();
+        });</script>
+}
+
+
+<div class="border backgroundWhite p-3">
+        <form method="post">
+            <div class="d-flex justify-content-between mb-3">
+                <div class="p-2">
+                    <h3 class="text-dark">ค้นหาข้อมูลการจัดส่งพัสดุ</h3>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label class="custom-label">ประเภทพัสดุ</label>
+                    @Html.DropDownList("DeliveryTypeId", (IEnumerable<SelectListItem>)@ViewBag.DeliveryTypeList, "Please select one", new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="custom-label">สถานะ</label>
+                    @Html.DropDownList("DeliveryStatusId", (IEnumerable<SelectListItem>)@ViewBag.DeliveryStatusList, "Please select one", new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="StartDate">วันที่เริ่ม</label>
+                    @Html.Editor("startDate", new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="EndDate">ถึงวันที่</label>
+                    @Html.Editor("endDate", new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <button type="submit" name="submit" asp-action="History" value="Search" class="btn btn-primary"><i class="fas fa-search"></i> ค้นหา</button>
+                    <button type="submit" name="submit" asp-action="PdfExport" value="Search" class="btn btn-dark"><i class="fas fa-print"></i> พิมพ์เอกสาร</a></button>
+                    @*<a asp-action="PdfExport" class="btn btn-dark">*@ 
+                </div>
+            </div>
+        </form>
+        <hr />
+
+        <div class="form-border">
+            <div class="table-responsive">
+                <table id="myTable" class="table table-bordered table-sm">
+                    <tr>
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            สถานที่จัดส่ง
+                        </th>
+                        <th>
+                            ที่อยู่
+                        </th>
+                        <th>
+                            กำหนดส่ง
+                        </th>
+                        <th>
+                            มอบหมาย
+                        </th>
+                        <th>
+                            เริ่มส่งพัสดุ
+                        </th>
+                        <th>
+                            สิ้นสุดส่งพัสดุ
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.DeliveryId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.PleaseShipping)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.AddressDetails)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.DeliveryDeadline)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.AssignerDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.MessengersDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.MessengersEndDate)
+                            </td>
+                            <td>
+                                <a asp-action="DeliveryListDetails" class='btn btn-sm btn-success' asp-route-id="@item.DeliveryId">  <i class="far fa-list-alt"></i> </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+            @*<table id="tblData" class="table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>สถานที่จัดส่ง</th>
+                    <th>ที่อยู่</th>
+                    <th>กำหนดส่ง</th>
+                    <th>มอบหมาย</th>
+                    <th>เริ่มส่งพัสดุ</th>
+                    <th>สิ้นสุดส่งพัสดุ</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>*@
+        </div>
+
+
+

@@ -1,0 +1,53 @@
+﻿@model HSHDelivery.Models.DeliveryType
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<br />
+<h2>Create Delivery Type</h2>
+<hr />
+
+
+
+<form asp-action="Create">
+    <div class="form-border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="DeliveryTypeName" class="control-label"></label>
+            <input asp-for="DeliveryTypeName" class="form-control" />
+            <span asp-validation-for="DeliveryTypeName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryTypeStatus" class="control-label"></label>
+            <input asp-for="DeliveryTypeStatus" class="form-control" />
+            <span asp-validation-for="DeliveryTypeStatus" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreateDate" class="control-label"></label>
+            <input asp-for="CreateDate" class="form-control" />
+            <span asp-validation-for="CreateDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreateBy" class="control-label"></label>
+            <input asp-for="CreateBy" class="form-control" />
+            <span asp-validation-for="CreateBy" class="text-danger"></span>
+        </div>
+     
+
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary btn-sm" /> &nbsp;
+            <a asp-action="Index" class="btn btn-success btn-sm">Back to List</a>
+        </div>
+
+
+    </div>
+</form>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

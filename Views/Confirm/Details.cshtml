@@ -1,0 +1,72 @@
+﻿@model HSHDelivery.Models.DeliveryViewModel.DeliveryViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="border backgroundWhite p-3">
+    <div class="row">
+        <div class="col-6">
+            <h3 class="text-dark">รายละเอียดการแจ้งงานจัดส่งพัสดุ</h3>
+        </div>
+        <div class="col-6 text-right">
+            @*<a asp-action="Edit" asp-route-id="@Model.Delivery.DeliveryId" class="btn btn-primary btn-sm">Edit</a>*@
+            <a asp-action="Index" class="btn btn-dark btn-sm">กลับหน้าหลัก</a>
+        </div>
+    </div>
+    <hr />
+    <div class="form-border">
+        <fieldset disabled>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Delivery.PleaseShipping" class="custom-label"></label>
+                    <input asp-for="Delivery.PleaseShipping" class="form-control" />
+                    <span asp-validation-for="Delivery.PleaseShipping" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Delivery.AddressDetails" class="custom-label"></label>
+                    <textarea asp-for="Delivery.AddressDetails" rows="2" class="form-control"></textarea>
+                    <span asp-validation-for="Delivery.AddressDetails" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Delivery.ContactEmail" class="custom-label"></label>
+                    <input asp-for="Delivery.ContactEmail" class="form-control" />
+                    <span asp-validation-for="Delivery.ContactEmail" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Delivery.ContactName" class="custom-label"></label>
+                    <input asp-for="Delivery.ContactName" class="form-control" />
+                    <span asp-validation-for="Delivery.ContactName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Delivery.ContactTel" class="custom-label"></label>
+                    <input asp-for="Delivery.ContactTel" class="form-control" />
+                    <span asp-validation-for="Delivery.ContactTel" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Delivery.DeliveryTypeId" class="custom-label"></label>
+                    <select asp-for="Delivery.DeliveryTypeId" asp-items="Model.DeliveryTypeList" class="form-control"></select>
+                    <span asp-validation-for="Delivery.DeliveryTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Delivery.DeliveryDeadline" class="control-label"></label>
+                    <input asp-for="Delivery.DeliveryDeadline" class="form-control" />
+                    <span asp-validation-for="Delivery.DeliveryDeadline" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Delivery.RequestsTo" class="custom-label"></label>
+                    <select asp-for="Delivery.RequestsTo" asp-items="Model.MessengerList" class="form-control"></select>
+                    <span asp-validation-for="Delivery.RequestsTo" class="text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+

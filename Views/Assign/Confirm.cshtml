@@ -1,0 +1,126 @@
+﻿@model HSHDelivery.Models.DeliveryViewModel.DeliveryViewModel
+@using HSHDelivery.Extensions
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<div class="border backgroundWhite p-3">
+
+    <form method="post" asp-action="Confirm">
+
+        <div class="d-flex justify-content-between mb-3">
+            <div class="p-2">
+                <h2 class="text-dark">มอบหมายแจ้งงานจัดส่งพัสดุ</h2>
+            </div>
+            <div class="p-2">
+                <input type="submit" value="มอบหมาย" class="btn btn-success btn-sm">
+                <a asp-action="Index" class="btn btn-primary btn-sm">กลับหน้าหลัก</a>
+            </div>
+        </div>
+
+
+        <div class="form-border">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+     
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Delivery.AssignerTo" class="custom-label"></label>
+                    <select asp-for="Delivery.AssignerTo" asp-items="Model.MessengerList" class="form-control">
+                        <option value="0">Please select one</option>
+                    </select>
+                    <span asp-validation-for="Delivery.AssignerTo" class="text-danger"></span>
+                </div>
+            </div>
+            @*<br />*@
+
+            <fieldset disabled>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Delivery.DeliveryTypeId" class="custom-label"></label>
+                        <select asp-for="Delivery.DeliveryTypeId" asp-items="Model.DeliveryTypeList" class="form-control">
+                            <option value="0">Please select one</option>
+                        </select>
+                        <span asp-validation-for="Delivery.DeliveryTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Delivery.DeliveryDeadline" class="control-label"></label>
+                        <input asp-for="Delivery.DeliveryDeadline" class="form-control" />
+                        <span asp-validation-for="Delivery.DeliveryDeadline" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Delivery.RequestsTo" class="custom-label"></label>
+                        <select asp-for="Delivery.RequestsTo" asp-items="Model.MessengerList" class="form-control">
+                            <option value="0">Please select one</option>
+                        </select>
+                        <span asp-validation-for="Delivery.RequestsTo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Delivery.PleaseShipping" class="custom-label"></label>
+                        <input asp-for="Delivery.PleaseShipping" class="form-control" />
+                        <span asp-validation-for="Delivery.PleaseShipping" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Delivery.AddressDetails" class="custom-label"></label>
+                        <textarea asp-for="Delivery.AddressDetails" rows="2" class="form-control"></textarea>
+                        <span asp-validation-for="Delivery.AddressDetails" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Delivery.ContactEmail" class="custom-label"></label>
+                        <input asp-for="Delivery.ContactEmail" class="form-control" />
+                        <span asp-validation-for="Delivery.ContactEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Delivery.ContactName" class="custom-label"></label>
+                        <input asp-for="Delivery.ContactName" class="form-control" />
+                        <span asp-validation-for="Delivery.ContactName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Delivery.ContactTel" class="custom-label"></label>
+                        <input asp-for="Delivery.ContactTel" class="form-control" />
+                        <span asp-validation-for="Delivery.ContactTel" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Delivery.RequestsDate" class="custom-label"></label>
+                        <input asp-for="Delivery.RequestsDate" class="form-control" />
+                        <span asp-validation-for="Delivery.RequestsDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label asp-for="Delivery.RequestsName" class="custom-label"></label>
+                        <input asp-for="Delivery.RequestsName" class="form-control" />
+                        <span asp-validation-for="Delivery.RequestsName" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Delivery.ApproveDate" class="custom-label"></label>
+                        <input asp-for="Delivery.ApproveDate" class="form-control" />
+                        <span asp-validation-for="Delivery.ApproveDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label asp-for="Delivery.ApproveName" class="custom-label"></label>
+                        <input asp-for="Delivery.ApproveName" class="form-control" />
+                        <span asp-validation-for="Delivery.ApproveName" class="text-danger"></span>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+</div>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+
+

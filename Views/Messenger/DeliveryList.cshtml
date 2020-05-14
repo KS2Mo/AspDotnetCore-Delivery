@@ -1,0 +1,231 @@
+﻿@model IEnumerable<HSHDelivery.Models.Delivery>
+@{
+    ViewData["Title"] = "DeliveryList";
+    var indexnum = 0;
+}
+
+<div class="container">
+    <div class="row">
+        @{ var counter = 0; }
+        @{
+            foreach (var item in Model)
+            {
+
+                if (counter % 3 == 3)
+                {
+                @: </div><div class="row">
+                    counter = 0;
+                }
+                counter++;
+                if (item.DeliveryStatusId == 4)
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-asterisk"></i> @item.DeliveryId | @item.DeliveryType.DeliveryTypeName</h5>
+                                <h4><a href="#" class="badge badge-secondary">@item.DeliveryStatus.DeliveryStatusName</a></h4>
+                                <h6><i class="fas fa-clock"></i> <strong>กำหนดส่ง</strong>  @item.DeliveryDeadline </h6>
+                                <h6><i class="fas fa-user"></i> <strong>ผู้ติดต่อ</strong> @item.ContactName</h6>
+                                <p class="card-text"><i class="fas fa-map-marker-alt"></i> <strong>ที่อยู่</strong> @item.PleaseShipping @item.AddressDetails</p>
+                                <div class="row  align-items-end">
+                                    <div class="col-sm">
+                                        <a onclick=ConfirmStartSending("/Messenger/_ConfirmLocation/@item.DeliveryId") class='btn btn-sm btn-primary active'>
+                                            <i class="fas fa-check"></i> รับงาน
+                                        </a>
+                                        <a onclick=CencleProcess("/Messenger/_NoConfirmLocation/@item.DeliveryId") class='btn btn-sm btn-danger active'>
+                                            <i class="fas fa-times"></i> ไม่รับ
+                                        </a>
+                                        <a href="/Messenger/PdfExport/@item.DeliveryId" class='btn btn-sm btn-dark'>
+                                            <i class='fas fa-print'></i> พิมพ์
+                                        </a>
+                                        <a class="btn btn-sm btn-dark" href="/Messenger/DeliveryListDetails/@item.DeliveryId">
+                                            <i class='far fa-list-alt'></i> เพิ่มเติม
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.DeliveryStatusId == 5)
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-asterisk"></i> @item.DeliveryId | @item.DeliveryType.DeliveryTypeName</h5>
+                                <h4><a href="#" class="badge badge-success">@item.DeliveryStatus.DeliveryStatusName</a></h4>
+                                <h6><i class="fas fa-clock"></i> <strong>กำหนดส่ง</strong>  @item.DeliveryDeadline </h6>
+                                <h6><i class="fas fa-user"></i> <strong>ผู้ติดต่อ</strong> @item.ContactName</h6>
+
+                                <p class="card-text"><i class="fas fa-map-marker-alt"></i> <strong>ที่อยู่</strong> @item.PleaseShipping @item.AddressDetails</p>
+                                <div class="row  align-items-end">
+                                    <div class="col-sm">
+                                        <a onclick=ConfirmStartSending("/Messenger/_StartSendingLocation/@item.DeliveryId") class='btn  btn-sm btn-success active'>
+                                            <i class="fas fa-play"></i> เริ่มส่ง
+                                        </a>
+                                        <a onclick=CencleProcess("/Messenger/_ToCancleLocation/@item.DeliveryId") class='btn  btn-sm btn-danger active'>
+                                            <i class="fas fa-minus"></i> ยกเลิก
+                                        </a>
+
+                                        <a class="btn btn-sm btn-dark" href="/Messenger/Process/@item.DeliveryId">
+                                            <i class='far fa-list-alt'></i> สถานะ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.DeliveryStatusId == 6)
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-asterisk"></i> @item.DeliveryId | @item.DeliveryType.DeliveryTypeName</h5>
+                                <h4><a href="#" class="badge badge-warning">@item.DeliveryStatus.DeliveryStatusName</a></h4>
+                                <h6><i class="fas fa-clock"></i> <strong>กำหนดส่ง</strong>  @item.DeliveryDeadline </h6>
+                                <h6><i class="fas fa-user"></i> <strong>ผู้ติดต่อ</strong> @item.ContactName</h6>
+                                <p class="card-text"><i class="fas fa-map-marker-alt"></i> <strong>ที่อยู่</strong> @item.PleaseShipping @item.AddressDetails</p>
+                                <div class="row  align-items-end">
+                                    <div class="col-sm">
+                                        <a onclick=ConfirmStartSending("/Messenger/_ToSendingLocation/@item.DeliveryId")  class='btn btn-success btn-sm active'>
+                                            <i class='fas fa-check-square'></i> ถึงที่หมาย
+                                        </a>
+                                        <a onclick=CencleProcess("/Messenger/_NoSuccessfulLocation/@item.DeliveryId") class='btn btn-danger btn-sm active'>
+                                            <i class='fas fa-window-close'></i> ส่งไม่สำเร็จ
+                                        </a>
+
+                                        <a class="btn btn-sm btn-dark" href="/Messenger/Process/@item.DeliveryId">
+                                            <i class='far fa-list-alt'></i> สถานะ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.DeliveryStatusId == 7)
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-asterisk"></i> @item.DeliveryId | @item.DeliveryType.DeliveryTypeName</h5>
+                                <h4><a href="#" class="badge badge-primary">@item.DeliveryStatus.DeliveryStatusName</a></h4>
+                                <h6><i class="fas fa-clock"></i> <strong>กำหนดส่ง</strong>  @item.DeliveryDeadline </h6>
+                                <h6><i class="fas fa-user"></i> <strong>ผู้ติดต่อ</strong> @item.ContactName</h6>
+                                <p class="card-text"><i class="fas fa-map-marker-alt"></i> <strong>ที่อยู่</strong> @item.PleaseShipping @item.AddressDetails</p>
+                                <div class="row  align-items-end">
+                                    <div class="col-sm">
+                                        <a onclick=ConfirmStartSending("/Messenger/_SuccessfulLocation/@item.DeliveryId")  class='btn btn-sm btn-success active'>
+                                            <i class='fas fa-check-square'></i> ส่งสำเร็จ
+                                        </a>
+                                        <a onclick=CencleProcess("/Messenger/_NoSuccessfulLocation/@item.DeliveryId") class='btn btn-sm btn-danger active'>
+                                            <i class='fas fa-window-close'></i> ส่งไม่สำเร็จ
+                                        </a>
+
+                                        <a class="btn btn-sm btn-dark" href="/Messenger/Process/@item.DeliveryId">
+                                            <i class='far fa-list-alt'></i> สถานะ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            }
+        }
+    </div>
+</div>
+
+<script>
+
+    function ConfirmStartSending(url) {
+        //showPosition();
+        var tempLatitude = 0.0000;
+        var tempLongitude = 0.0000;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                tempLatitude = position.coords.latitude;
+                tempLongitude = position.coords.longitude;
+                //alert(tempLatitude + '|' + tempLongitude);
+                swal({
+                    title: "ยืนยันการทำรายการใช่ไหม?",
+                    buttons: true,
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: 'GET',
+                            url: url + '|' + tempLatitude + '|' + tempLongitude,
+                            success: function (data) {
+                                if (data.success) {
+                                    location.reload();
+                                }
+                                else {
+                                    //toastr.error(data.message);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        }
+        else {
+            swal("geolocation not supported")
+        }
+    }
+
+    function CencleProcess(url) {
+        swal("กรุณากรอกเหตุผลในการยกเลิก",
+        {
+            content: "input",
+        })
+            .then((value) =>
+            {
+                //swal(`You typed: ${value}`);
+                var tempLatitude = 0.0000;
+                var tempLongitude = 0.0000;
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        tempLatitude = position.coords.latitude;
+                        tempLongitude = position.coords.longitude;
+                        //alert(tempLatitude + '|' + tempLongitude);
+                        swal({
+                            title: "ยืนยันการทำรายการใช่ไหม?",
+                            buttons: true,
+                            dangerMode: true
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: url + '|' + tempLatitude + '|' + tempLongitude + '|' + `${value}`,
+                                    success: function (data) {
+                                        if (data.success) {
+                                            location.reload();
+                                        }
+                                        else {
+                                            //toastr.error(data.message);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+                else {
+                    swal("geolocation not supported")
+                }
+            });
+    }
+</script>
+
+
+
+
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}*@
+
+

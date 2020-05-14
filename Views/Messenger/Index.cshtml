@@ -1,0 +1,277 @@
+﻿@*@model IEnumerable<HSHDelivery.Models.Delivery>*@
+
+
+
+
+@{
+    var status = Context.Request.Query["status"];
+
+    var shipping = "text-dark";//มอบหมายงาน
+    var pending = "text-dark";//รอจัดส่งสินค้า
+    var start_sending = "text-dark";//ระหว่างการจัดส่ง
+    var to_sending = "text-dark";//ถึงปลายทางการจัดส่ง
+    var close_sending = "text-dark";//การจัดส่งเสร็จสิ้น 
+    var all = "text-dark";
+
+    if (status == "shipping")
+    {
+        shipping = "list-group-item-dark";
+    }
+    else if (status == "pending")
+    {
+        pending = " list-group-item-dark";
+    }
+    else if (status == "start_sending")
+    {
+        start_sending = " list-group-item-dark";
+    }
+    else if (status == "to_sending")
+    {
+        to_sending = " list-group-item-dark";
+    }
+    else if (status == "close_sending")
+    {
+        close_sending = " list-group-item-dark";
+    }
+    else
+    {
+        all = " list-group-item-dark";
+    }
+}
+
+
+<div class="border backgroundWhite p-3">
+    <div class="d-flex justify-content-between mb-3">
+        <div class="p-2">
+            <h3 class="text-dark">รายการจัดส่งพัสดุ</h3>
+        </div>
+        <ul class="list-group list-group-horizontal-sm">
+            <a style="text-decoration:none" asp-controller="Messenger" asp-route-status="close_sending" asp-action="Index">
+                <li class="list-group-item @close_sending">ส่งเสร็จสิ้น</li>
+            </a>
+            <a style="text-decoration:none" asp-controller="Messenger" asp-route-status="to_sending" asp-action="Index">
+                <li class="list-group-item @to_sending">ถึงปลายทาง</li>
+            </a>
+            <a style="text-decoration:none" asp-controller="Messenger" asp-route-status="start_sending" asp-action="Index">
+                <li class="list-group-item @start_sending">จัดส่งสินค้า</li>
+            </a>
+            <a style="text-decoration:none" asp-controller="Messenger" asp-route-status="pending" asp-action="Index">
+                <li class="list-group-item @pending">รอจัดส่ง</li>
+            </a>
+            <a style="text-decoration:none" asp-controller="Messenger" asp-route-status="shipping" asp-action="Index">
+                <li class="list-group-item @shipping">รับงาน</li>
+            </a>
+            <a style="text-decoration:none" asp-controller="Messenger" asp-route-status="all" asp-action="Index">
+                <li class="list-group-item @all">ทั้งหมด</li>
+            </a>
+        </ul>
+    </div>
+
+
+  
+      
+
+       
+        <div class="table-responsive">
+            <table id="tblData" class="table table-bordered table-sm" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>No</th>
+                        <th>สถานที่จัดส่ง</th>
+                        <th>ที่อยู่</th>
+                        <th>ชื่อผู้ติดต่อ</th>
+                        <th>เบอร์โทร</th>
+                        <th>กำหนดส่ง</th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+
+
+    @section Scripts{
+        @*<script src="~/js/messenger.js"></script>*@
+        <script>
+            var dataTable;
+
+            $(document).ready(function () {
+                var url = window.location.search;
+                if (url.includes("shipping")) {
+                    loadDataTable("GetAllShippingOrders");
+                }
+                else if (url.includes("pending")) {
+                    loadDataTable("GetAllPendingOrders");
+                }
+                else if (url.includes("start_sending")) {
+                    loadDataTable("GetAllStartSending");
+                }
+                else if (url.includes("to_sending")) {
+                    loadDataTable("GetAllToSending");
+                }
+                else if (url.includes("close_sending")) {
+                    loadDataTable("GetAllCloseSending");
+                }
+                else {
+                    loadDataTable("GetAllHistory");
+                }
+            });
+
+            function loadDataTable(url) {
+
+                dataTable = $('#tblData').DataTable({
+                    "ajax": {
+                        "url": "/Messenger/" + url,
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        {
+                            "data": "deliveryId",
+                            "render": function (data, type, row) {
+                                if (row.deliveryStatusId == 4) {
+                                    return `<div>
+                                                        <a href="/Messenger/Confirm/${data}" class='btn btn-sm btn-primary' >
+                                                            <i class="fas fa-check"></i> รับงาน
+                                                        </a>
+                                                        <a  href="/Messenger/NoConfirm/${data}" class='btn btn-sm btn-danger' >
+                                                           <i class="fas fa-times"></i> ไม่รับ
+                                                        </a>
+                                                        <a  href="/Messenger/PdfExport/${data}" class='btn btn-sm btn-dark' >
+                                                           <i class='fas fa-print'></i> พิมพ์
+                                                        </a>
+                                                    </div>`;
+                                }
+                                if (row.deliveryStatusId == 5) {
+                                    return `<div>
+                                                        <a href="/Messenger/StartSending/${data}" class='btn btn-sm btn-success' >
+                                                            <i class="fas fa-play"></i> เริ่มส่ง
+                                                        </a>
+                                                        <a  href="/Messenger/ToCancle/${data}" class='btn btn-sm btn-danger' >
+                                                           <i class="fas fa-minus"></i> ยกเลิก
+                                                        </a>
+
+                                                    </div>`;
+                                }
+                                if (row.deliveryStatusId == 6) {
+                                    return `<div>
+                                                        <a href="/Messenger/ToSending/${data}" class='btn btn-sm btn-success' >
+                                                            <i class='fas fa-check-square'></i> ถึงที่หมาย
+                                                        </a>
+                                                         <a  href="/Messenger/NoSuccessful/${data}" class='btn btn-sm btn-danger' >
+                                                           <i class='fas fa-window-close'></i> ส่งไม่สำเร็จ
+                                                        </a>
+                                                    </div>`;
+                                }
+                                if (row.deliveryStatusId == 7) {
+                                    return `<div>
+                                                        <a href="/Messenger/Successful/${data}" class='btn btn-sm btn-success' >
+                                                            <i class='fas fa-check-square'></i> ส่งสำเร็จ
+                                                        </a>
+                                                        <a  href="/Messenger/NoSuccessful/${data}" class='btn btn-sm btn-danger' >
+                                                           <i class='fas fa-window-close'></i> ส่งไม่สำเร็จ
+                                                        </a>
+                                                    </div>`;
+                                }
+                                if (row.deliveryStatusId == 8) {
+                                    return `<div>
+                                                        <a href="/Messenger/Details/${data}" class='btn btn-sm btn-success' >
+                                                            <i class='far fa-list-alt'></i> รายละเอียด
+                                                        </a>
+                                                        <a  href="/Messenger/PdfExport/${data}" class='btn btn-sm btn-dark' >
+                                                           <i class='fas fa-print'></i> พิมพ์
+                                                        </a>
+                                                    </div>`;
+                                }
+
+                            }, "width": "15%"
+                        },
+                        { "data": "deliveryId" },
+                        { "data": "pleaseShipping" },
+                        { "data": "addressDetails" },
+                        { "data": "contactName" },
+                        { "data": "contactTel" },
+                        {
+                            "data": "deliveryDeadline"
+                        }
+
+                    ],
+                    "language": {
+                        "emptyTable": "No records found."
+                    },
+                    "width": "100%"
+                });
+            }
+
+
+        </script>
+    }
+
+
+    @*<h3>มอบหมายงานจัดส่งพัสดุ</h3>
+        <hr />
+        <div class="form-border">
+            <table class="table table-bordered table-sm">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.DeliveryTypeId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.DeliveryDeadline)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.PleaseShipping)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ContactName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ContactTel)
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => item.DeliveryType.DeliveryTypeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.DeliveryDeadline)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.PleaseShipping)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.ContactName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.ContactTel)
+                        </td>
+                        <td>
+                            @if (item.DeliveryStatus.DeliveryStatusId == 3)
+                            {
+                                <a asp-action="Confirm" class="btn btn-sm btn-primary" asp-route-id="@item.DeliveryId"> <i class="fas fa-check-square"></i> รับงาน </a>
+                                <a asp-action="NoConfirm" class="btn btn-sm btn-danger" asp-route-id="@item.DeliveryId"> <i class="fas fa-window-close"></i> ไม่รับงาน</a>
+                                <a asp-action="PdfExport" class="btn btn-sm btn-dark" asp-route-id="@item.DeliveryId"> <i class="fas fa-print"></i> พิมพ์เอกสาร</a>
+                            }
+                            @if (item.DeliveryStatus.DeliveryStatusId == 4)
+                            {
+                                <a asp-action="Successful" class="btn btn-sm btn-success" asp-route-id="@item.DeliveryId"> <i class="fas fa-check-square"></i> จัดส่งสำเร็จ</a>
+                                <a asp-action="NoSuccessful" class="btn btn-sm btn-danger" asp-route-id="@item.DeliveryId"> <i class="fas fa-window-close"></i> จัดส่งไม่สำเร็จ</a>
+                                <a asp-action="PdfExport" class="btn btn-sm btn-dark" asp-route-id="@item.DeliveryId"> <i class="fas fa-print"></i> พิมพ์เอกสาร</a>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </table>
+        </div>*@
+
+
+
+
+
+

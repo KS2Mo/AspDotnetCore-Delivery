@@ -1,0 +1,125 @@
+﻿@model IEnumerable<HSHDelivery.Models.Delivery>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="border backgroundWhite p-3">
+    <form method="post">
+        <div class="d-flex justify-content-between mb-3">
+            <div class="p-2">
+                <h3 class="text-dark">ค้นหาข้อมูลการจัดส่งพัสดุ</h3>
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label class="custom-label">ประเภทพัสดุ</label>
+                @Html.DropDownList("DeliveryTypeId", (IEnumerable<SelectListItem>)@ViewBag.DeliveryTypeList, "Please select one", new { @class = "form-control" })
+            </div>
+            <div class="form-group col-md-2">
+                <label class="custom-label">สถานะ</label>
+                @Html.DropDownList("DeliveryStatusId", (IEnumerable<SelectListItem>)@ViewBag.DeliveryStatusList, "Please select one", new { @class = "form-control" })
+            </div>
+            <div class="form-group col-md-2">
+                <label class="custom-label">ผู้ส่งพัสดุ</label>
+                @Html.DropDownList("MessengerId", (IEnumerable<SelectListItem>)@ViewBag.MessengerList, "Please select one", new { @class = "form-control" })
+            </div>
+            <div class="form-group col-md-2">
+                <label for="StartDate">วันที่เริ่ม</label>
+                @Html.Editor("startDate", new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+            </div>
+            <div class="form-group col-md-2">
+                <label for="EndDate">ถึงวันที่</label>
+                @Html.Editor("endDate", new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-10">
+                <button type="submit" name="submit" value="Search" class="btn btn-primary"><i class="fas fa-search"></i> ค้นหา</button>
+                <button type="submit" name="submit" asp-action="PdfExport" value="Search" class="btn btn-dark"><i class="fas fa-print"></i> พิมพ์เอกสาร</a></button>
+            </div>
+        </div>
+    </form>
+    <hr />
+
+    <div class="form-border">
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.DeliveryTypeId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.DeliveryStatusId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.DeliveryDeadline)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.PleaseShipping)
+                    </th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        <a asp-action="Edit" class='btn btn-sm btn-primary' asp-route-id="@item.DeliveryId">  <i class="fas fa-edit"></i> </a>
+                        <a asp-action="Details" class='btn btn-sm btn-success' asp-route-id="@item.DeliveryId">  <i class="far fa-list-alt"></i> </a>
+                        <a asp-action="PdfExport" class='btn btn-sm btn-dark' asp-route-id="@item.DeliveryId">   <i class='fas fa-print'></i> </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.DeliveryType.DeliveryTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.DeliveryStatus.DeliveryStatusName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.DeliveryDeadline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.PleaseShipping)
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+        @section Scripts{
+            <script>
+                var dateFormat = "mm/dd/yy",
+                    from = $("#startDate")
+                        .datepicker({
+                            changeMonth: true,
+                            changeYear: true,
+                            maxDate: "+0D"
+                        })
+                        .on("change", function () {
+                            to.datepicker("option", "minDate", getDate(this));
+                        }),
+                    to = $("#endDate").datepicker({
+                        defaultDate: "+1w",
+                        changeMonth: true,
+                        changeYear: true,
+                        maxDate: "+0D"
+
+                    })
+                        .on("change", function () {
+                            from.datepicker("option", "maxDate", getDate(this));
+                        });
+
+                function getDate(element) {
+                    var date;
+                    try {
+                        date = $.datepicker.parseDate(dateFormat, element.value);
+                    } catch (error) {
+                        date = null;
+                    }
+
+                    return date;
+                }
+            </script>
+
+        }
